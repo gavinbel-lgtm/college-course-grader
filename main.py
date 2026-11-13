@@ -273,8 +273,8 @@ def calculate_grade(state: State) -> Page:
 
 @route
 def target_grade_page(state: State) -> Page:
-   """
-   Display the form for entering a desired grade.
+    """
+    Display the form for entering a desired grade.
 
     Args:
         state: The current website state.
