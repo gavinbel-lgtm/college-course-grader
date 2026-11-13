@@ -6,12 +6,11 @@ from bakery import assert_equal
 set_website_title("College Grade Calculator")
 
 set_site_information(
-    author="Your Name",
-    description="A simple website that helps college students "
-                "calculate their current grades and determine "
-                "what grade they need on their next assignment.",
-    sources="Drafter documentation and ChatGPT assistance.",
-    planning=["Copy of CS1 Final Project 1_ Design.pdf"],
+    author="Gavin Bell",
+    description="calculate current grades and determine "
+                "what grade they need on their next assignment.",                
+    sources="Drafter documentation and LLM",
+    planning=["Plan.pdf", "Design.pdf"],
     links=["https://github.com/your-username/your-repository"]
 )
 hide_debug_information()
