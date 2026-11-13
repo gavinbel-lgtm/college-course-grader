@@ -3,6 +3,19 @@ from dataclasses import dataclass
 from drafter import *
 from bakery import assert_equal
 
+set_website_title("College Grade Calculator")
+
+set_site_information(
+    author="Your Name",
+    description="A simple website that helps college students "
+                "calculate their current grades and determine "
+                "what grade they need on their next assignment.",
+    sources="Drafter documentation and ChatGPT assistance.",
+    planning=["Copy of CS1 Final Project 1_ Design.pdf"],
+    links=["https://github.com/your-username/your-repository"]
+)
+hide_debug_information()
+set_website_framed(False)
 
 @dataclass
 class Assignment:
