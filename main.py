@@ -83,8 +83,7 @@ def required_next_grade(assignments: list[Assignment],
     Returns:
         The grade needed on the next equally weighted assignment.
     """
-                        
-    Calculate the grade needed on the next assignment.
+            
     total = 0.0
 
     for assignment in assignments:
