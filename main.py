@@ -7,10 +7,10 @@ set_website_title("College Grade Calculator")
 
 set_site_information(
     author="Gavin Bell",
-    description="calculate current grades and determine "
-                "what grade they need on their next assignment.",                
+    description="calculates current grades and determines "
+                "what grade the student needs on their next assignment.",                
     sources="Drafter documentation and LLM",
-    planning=["Plan.pdf", "Design.pdf"],
+    planning=["Copy of CS1 Final Project 0: Pick a Problem.pdf", "Copy of CS1 Final Project 1: Design.pdf", "Project LLM.pdf"],
     links=["https://github.com/your-username/your-repository"]
 )
 hide_debug_information()
@@ -18,14 +18,30 @@ set_website_framed(False)
 
 @dataclass
 class Assignment:
-    """Store the name and grade for one assignment."""
+    """
+    Store information about one course assignment.
+
+    Attributes:
+        name: The name of the assignment.
+        grade: The assignment grade as a percentage.
+    """
     name: str
     grade: float
 
 
 @dataclass
 class State:
-    """Store information that the website needs between pages."""
+    """
+    Stores information shared between the website's pages.
+
+    Attributes:
+        assignments: A list of saved Assignment objects.
+        course_name: The name of the current course.
+        current_grade: The student's current average.
+        target_grade: The student's desired grade.
+        needed_grade: The grade needed on the next assignment.
+        message: A message displayed to the student.
+    """
     assignments: list[Assignment]
     course_name: str
     current_grade: float
@@ -35,7 +51,16 @@ class State:
 
 
 def average_grades(assignments: list[Assignment]) -> float:
-    """Calculate the average of all assignment grades."""
+    """
+    Calculate the average of all assignment grades.
+
+    Args:
+        assignments: A list of Assignment objects.
+
+    Returns:
+        The average assignment grade, or 0.0 if the list is empty.
+    """
+
     if len(assignments) == 0:
         return 0.0
 
@@ -48,7 +73,18 @@ def average_grades(assignments: list[Assignment]) -> float:
 
 def required_next_grade(assignments: list[Assignment],
                         target: float) -> float:
-    """Calculate the grade needed on the next assignment."""
+    """
+    Calculate the grade needed on the next assignment.
+
+    Args:
+        assignments: A list of completed Assignment objects.
+        target: The desired overall grade.
+
+    Returns:
+        The grade needed on the next equally weighted assignment.
+    """
+                        
+    Calculate the grade needed on the next assignment.
     total = 0.0
 
     for assignment in assignments:
@@ -61,13 +97,32 @@ def required_next_grade(assignments: list[Assignment],
 
 
 def valid_grade(grade: float) -> bool:
-    """Check whether a grade is between 0 and 100."""
+    """
+    Check whether a grade is within the allowed range.
+
+    Args:
+        grade: The grade entered by the student.
+
+    Returns:
+        True if the grade is between 0 and 100, otherwise False.
+    """
+
     return grade >= 0 and grade <= 100
 
 
 @route
 def index(state: State) -> Page:
-    """Display the home page and main navigation."""
+    """
+    Display the home page and main navigation.
+
+    Args:
+        state: The current website state.
+
+    Returns:
+        The home page with links to the other website pages.
+    """
+
+
     return Page(state, [
         "COLLEGE GRADE CALCULATOR",
         "Welcome! Use this website to keep track of your grades.",
@@ -86,7 +141,16 @@ def index(state: State) -> Page:
 
 @route
 def save_course(state: State, course_name: str) -> Page:
-    """Save the course name entered by the student."""
+    """
+    Save the course name entered by the student.
+
+    Args:
+        state: The current website state.
+        course_name: The name entered by the student.
+
+    Returns:
+        The home page with a message confirming the result.
+    """
     if course_name.strip() == "":
         state.message = "Please enter a course name."
     else:
@@ -98,7 +162,15 @@ def save_course(state: State, course_name: str) -> Page:
 
 @route
 def add_assignment(state: State) -> Page:
-    """Display the form for entering a new assignment."""
+    """
+    Display the form for entering a new assignment.
+
+    Args:
+        state: The current website state.
+
+    Returns:
+        The page containing the assignment input fields.
+    """
     return Page(state, [
         "ADD AN ASSIGNMENT",
         "Enter the assignment name:",
@@ -113,7 +185,17 @@ def add_assignment(state: State) -> Page:
 @route
 def save_assignment(state: State, assignment_name: str,
                     grade: float) -> Page:
-    """Check and save a new assignment."""
+    """
+    Validate and save a new assignment.
+
+    Args:
+        state: The current website state.
+        assignment_name: The name of the assignment.
+        grade: The grade received on the assignment.
+
+    Returns:
+        The assignments page with a success or error message.
+    """
     if assignment_name.strip() == "":
         state.message = "Please enter an assignment name."
     elif not valid_grade(grade):
@@ -129,7 +211,17 @@ def save_assignment(state: State, assignment_name: str,
 
 @route
 def view_assignments(state: State) -> Page:
-    """Display all assignments currently saved."""
+    """
+    Display all assignments saved by the student.
+
+    Args:
+        state: The current website state.
+
+    Returns:
+        A page listing assignments and the current average.
+    """
+
+
     content = ["YOUR ASSIGNMENTS"]
 
     if len(state.assignments) == 0:
@@ -153,7 +245,15 @@ def view_assignments(state: State) -> Page:
 
 @route
 def calculate_grade(state: State) -> Page:
-    """Calculate and display the student's current grade."""
+    """
+    Calculate and display the student's current grade.
+
+    Args:
+        state: The current website state.
+
+    Returns:
+        A page displaying the current average and a message.
+    """
     if len(state.assignments) == 0:
         state.message = "Add assignments before calculating your grade."
         state.current_grade = 0.0
@@ -174,7 +274,15 @@ def calculate_grade(state: State) -> Page:
 
 @route
 def target_grade_page(state: State) -> Page:
-    """Display the form for entering a desired grade."""
+   """
+   Display the form for entering a desired grade.
+
+    Args:
+        state: The current website state.
+
+    Returns:
+        The page containing the desired grade input field.
+    """
     return Page(state, [
         "DESIRED GRADE CALCULATOR",
         "What grade would you like to achieve?",
@@ -187,7 +295,16 @@ def target_grade_page(state: State) -> Page:
 
 @route
 def save_target_grade(state: State, target_grade: float) -> Page:
-    """Check and save the student's desired grade."""
+    """
+    Validate and save the student's desired grade.
+
+    Args:
+        state: The current website state.
+        target_grade: The desired overall course grade.
+
+    Returns:
+        The target grade results page or the input page with an error.
+    """
     if not valid_grade(target_grade):
         state.message = "Your desired grade must be between 0 and 100."
         return target_grade_page(state)
@@ -198,7 +315,16 @@ def save_target_grade(state: State, target_grade: float) -> Page:
 
 @route
 def calculate_needed_grade(state: State) -> Page:
-    """Display the grade needed on the next assignment."""
+    """
+    Calculate and display the grade needed on the next assignment.
+
+    Args:
+        state: The current website state.
+
+    Returns:
+        A page displaying the grade needed to reach the target.
+    """
+
     state.needed_grade = required_next_grade(
         state.assignments, state.target_grade
     )
@@ -229,7 +355,15 @@ def calculate_needed_grade(state: State) -> Page:
 
 @route
 def help_page(state: State) -> Page:
-    """Explain how to use the grade calculator."""
+    """
+    Explain how to use the College Grade Calculator.
+
+    Args:
+        state: The current website state.
+
+    Returns:
+        The help page with instructions for using the website.
+    """
     return Page(state, [
         "HELP",
         "1. Enter your course name on the home page.",
