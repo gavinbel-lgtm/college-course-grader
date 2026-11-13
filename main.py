@@ -10,8 +10,9 @@ set_site_information(
     description="calculates current grades and determines "
                 "what grade the student needs on their next assignment.",                
     sources="Drafter documentation and LLM",
-    planning=["Copy of CS1 Final Project 0: Pick a Problem.pdf", "Copy of CS1 Final Project 1: Design.pdf", "Project LLM.pdf"],
-    links=["https://github.com/your-username/your-repository"]
+    planning=["Copy of CS1 Final Project 0: Pick a Problem.pdf", "Copy of CS1 Final Project 1: Design.pdf", 
+              "Project LLM(1).pdf", "Project LLM(2).pdf"],
+    links=["https://github.com/gavinbel-lgtm/college-course-grader"]
 )
 hide_debug_information()
 set_website_framed(False)
